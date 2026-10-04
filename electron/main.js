@@ -36,16 +36,22 @@ function createWindow() {
     icon: path.join(__dirname, '../public/icon.png')
   });
 
-  const devUrl = 'http://localhost:5173';
+  const devUrl = process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173';
   const prodPath = path.join(__dirname, '../dist/index.html');
 
-  if (process.env.NODE_ENV === 'development' || !app.isPackaged) {
-    mainWindow.loadURL(devUrl).catch(() => {
-      // If dev server not yet ready, retry or load dist
-      setTimeout(() => mainWindow.loadURL(devUrl), 1500);
-    });
-  } else {
+  if (process.env.VITE_DEV_SERVER_URL) {
+    log.info(`Loading Dev URL: ${devUrl}`);
+    mainWindow.loadURL(devUrl);
+  } else if (fs.existsSync(prodPath)) {
+    log.info(`Loading Production File: ${prodPath}`);
     mainWindow.loadFile(prodPath);
+  } else {
+    log.info(`Loading Default Dev URL: ${devUrl}`);
+    mainWindow.loadURL(devUrl).catch(() => {
+      if (fs.existsSync(prodPath)) {
+        mainWindow.loadFile(prodPath);
+      }
+    });
   }
 
   mainWindow.on('closed', () => {
@@ -54,6 +60,13 @@ function createWindow() {
       fileWatcher.close();
     }
   });
+}
+
+// Set dedicated user data directory to prevent Windows cache lock collisions
+try {
+  app.setPath('userData', path.join(app.getPath('appData'), 'mcIDE-Studio-App'));
+} catch (e) {
+  // Ignore fallback
 }
 
 app.whenReady().then(() => {
