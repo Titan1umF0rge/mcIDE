@@ -1,0 +1,53 @@
+{
+  "name": "mcide-studio",
+  "version": "1.0.0",
+  "description": "mcIDE Studio - High-Performance Minecraft Development Environment",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev:vite": "vite --port 5173 --strictPort",
+    "dev:electron": "wait-on http://localhost:5173 && electron .",
+    "dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
+    "build:vite": "vite build",
+    "build": "vite build",
+    "start": "electron .",
+    "start:dev": "concurrently -k \"npm run dev:vite\" \"npm run dev:electron\"",
+    "start:prod": "vite build && electron ."
+  },
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "adm-zip": "^0.5.16",
+    "axios": "^1.7.9",
+    "canvas": "^3.2.3",
+    "chokidar": "^4.0.3",
+    "electron-log": "^5.2.4",
+    "lucide-react": "^0.469.0",
+    "monaco-editor": "^0.52.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.6.1",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
+    "vite": "^6.0.5",
+    "wait-on": "^8.0.1"
+  },
+  "keywords": [
+    "minecraft",
+    "ide",
+    "electron",
+    "monaco",
+    "fabric",
+    "forge",
+    "neoforge",
+    "paper",
+    "spigot"
+  ],
+  "author": "mcIDE Systems",
+  "license": "MIT"
+}
